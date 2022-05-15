@@ -6,13 +6,12 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshGenerator : MonoBehaviour
 {
-    Mesh mesh;
-    Vector3[] vertices;
-    int[] triangles;
+    Dictionary<Vector2Int, Mesh> chunks = new Dictionary<Vector2Int, Mesh>();
+    public Material material;
+
     int seed;
 
-    public int xSize = 20;
-    public int zSize = 20;
+    public int chunkSize = 5;
     public float perlinMultiplier = 0.3f;
     public float perlinAddition = 2f;
 
@@ -21,49 +20,58 @@ public class MeshGenerator : MonoBehaviour
     void Start()
     {
         seed = 0;
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-        CreateShape();
+        GenerateChunk(new Vector2Int(0, 0));
+        GenerateChunk(new Vector2Int(0, 1));
+        GenerateChunk(new Vector2Int(1, 0));
+        GenerateChunk(new Vector2Int(1, 1));
     }
 
     [ButtonMethod]
     void RefreshShape()
     {
-        CreateShape();
+        //ChenerateChunk();
     }
     
-    private void Update()
-    {
-        UpdateMesh();
-    }
+    //private void Update()
+    //{
+    //    UpdateMesh();
+    //}
 
-    void CreateShape()
+    void GenerateChunk(Vector2Int chunkPosition)
     {
-        vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+        GameObject newGo = new GameObject();
+        newGo.AddComponent<MeshRenderer>().material = material;
+        MeshFilter newMeshFilter = newGo.AddComponent<MeshFilter>();
 
-        for (int z = 0, i = 0; z < zSize + 1; z++)
+        Vector3[] vertices;
+        int[] triangles;
+        Mesh newMesh = new Mesh();
+
+        vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
+
+        for (int z = 0, i = 0; z < chunkSize + 1; z++)
         {
-            for (int x = 0; x < xSize + 1; x++)
+            for (int x = 0; x < chunkSize + 1; x++)
             {
-                float y = Mathf.PerlinNoise(x * perlinMultiplier + seed, z * perlinMultiplier + seed) * perlinAddition;
-                vertices[i] = new Vector3(x, y, z);
+                float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
+                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, y , z + chunkPosition.y * chunkSize);
                 i++;
             }
         }
 
         int vert = 0;
         int tris = 0;
-        triangles = new int[xSize * zSize * 6];
-        for (int z = 0; z < xSize; z++)
+        triangles = new int[chunkSize * chunkSize * 6];
+        for (int z = 0; z < chunkSize; z++)
         {
-            for (int x = 0; x < zSize; x++)
+            for (int x = 0; x < chunkSize; x++)
             {
                 triangles[tris + 0] = vert + 0;
-                triangles[tris + 1] = vert + xSize + 1;
+                triangles[tris + 1] = vert + chunkSize + 1;
                 triangles[tris + 2] = vert + 1;
                 triangles[tris + 3] = vert + 1;
-                triangles[tris + 4] = vert + xSize + 1;
-                triangles[tris + 5] = vert + xSize + 2;
+                triangles[tris + 4] = vert + chunkSize + 1;
+                triangles[tris + 5] = vert + chunkSize + 2;
 
                 vert++;
                 tris += 6;
@@ -71,29 +79,21 @@ public class MeshGenerator : MonoBehaviour
             vert++;
         }
 
-        //triangles = new int[]
-        //{
-        //    0, 1, 2,
-        //    1, 3, 2
-        //};
+        newMesh.Clear();
+        newMesh.vertices = vertices;
+        newMesh.triangles = triangles;
+        newMesh.RecalculateNormals();
+        newMeshFilter.mesh = newMesh;
+        chunks.Add(chunkPosition, newMesh);
     }
 
-    void UpdateMesh()
-    {
-        mesh.Clear();
-
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (vertices == null)
-            return;
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(vertices[i], .1f);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (vertices == null)
+    //        return;
+    //    for (int i = 0; i < vertices.Length; i++)
+    //    {
+    //        Gizmos.DrawSphere(vertices[i], .1f);
+    //    }
+    //}
 }
