@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MyBox;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -8,27 +9,35 @@ public class MeshGenerator : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
+    int seed;
 
     public int xSize = 20;
     public int zSize = 20;
+    public float perlinMultiplier = 0.3f;
+    public float perlinAddition = 2f;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        seed = 0;
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
-        //CreateShape();
-        StartCoroutine(CreateShape());
-        //UpdateMesh();
+        CreateShape();
     }
 
+    [ButtonMethod]
+    void RefreshShape()
+    {
+        CreateShape();
+    }
+    
     private void Update()
     {
         UpdateMesh();
     }
 
-    IEnumerator CreateShape()
+    void CreateShape()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
 
@@ -36,7 +45,7 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x < xSize + 1; x++)
             {
-                float y = Mathf.PerlinNoise(x * .3f, z * .3f) + 2f;
+                float y = Mathf.PerlinNoise(x * perlinMultiplier + seed, z * perlinMultiplier + seed) * perlinAddition;
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
@@ -58,8 +67,6 @@ public class MeshGenerator : MonoBehaviour
 
                 vert++;
                 tris += 6;
-
-                yield return new WaitForSeconds(0.002f);
             }
             vert++;
         }
