@@ -47,21 +47,8 @@ public class MeshGenerator : MonoBehaviour
                 {
                     chunksToRender.Add(new Vector2Int(x, y));
                 }
-                //if (x*x + y*y <= r*r)
-                //{
-                //    chunksToRender.Add(new Vector2Int(x, y));
-                //}
             }
         }
-        //chunksToRender[0] = playerPosition;
-        //chunksToRender[1] = new Vector2Int(playerCurrentX, playerCurrentZ + 1);
-        //chunksToRender[2] = new Vector2Int(playerCurrentX + 1, playerCurrentZ + 1);
-        //chunksToRender[3] = new Vector2Int(playerCurrentX + 1, playerCurrentZ);
-        //chunksToRender[4] = new Vector2Int(playerCurrentX + 1, playerCurrentZ - 1);
-        //chunksToRender[5] = new Vector2Int(playerCurrentX, playerCurrentZ - 1);
-        //chunksToRender[6] = new Vector2Int(playerCurrentX - 1, playerCurrentZ - 1);
-        //chunksToRender[7] = new Vector2Int(playerCurrentX - 1, playerCurrentZ);
-        //chunksToRender[8] = new Vector2Int(playerCurrentX - 1, playerCurrentZ + 1);
 
         keysToRemove.Clear();
         foreach (var item in enabledChunks)
@@ -81,8 +68,6 @@ public class MeshGenerator : MonoBehaviour
         {
             GenerateChunk(item);
         }
-
-        //Debug.Log(chunks.Count + ", " + enabledChunks.Count);
     }
 
     void GenerateChunk(Vector2Int chunkPosition)

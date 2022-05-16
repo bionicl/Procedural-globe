@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.2916963, g: 0.4166416, b: 0.5377358, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   player: {fileID: 1128895517}
-  chunkSize: 25
+  chunkSize: 40
   perlinMultiplier: 0.15
   perlinAddition: 9.8
   renderDistance: 5
@@ -289,13 +289,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599673451}
-  m_LocalRotation: {x: 0.1756244, y: 0, z: 0, w: 0.98445725}
+  m_LocalRotation: {x: 0.09150162, y: 0, z: 0, w: 0.99580497}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1128895517}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 20.23, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.5, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,7 +440,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 150
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -466,8 +466,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.1756244, y: 0, z: 0, w: 0.98445725}
-  m_LocalPosition: {x: 0.5, y: 15.666904, z: -1.7383084}
+  m_LocalRotation: {x: 0.09150162, y: 0, z: 0, w: 0.99580497}
+  m_LocalPosition: {x: 0.5, y: 8.857774, z: -1.8936156}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -533,7 +533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128895516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 15, z: 0}
+  m_LocalPosition: {x: 0, y: 8.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 599673452}
@@ -571,10 +571,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1128895518}
-  speed: 70
+  speed: 40
   mouseSensitivity: 15
-  upLimit: -50
-  downLimit: 50
+  boostSpeed: 80
 --- !u!1 &1997232909
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +615,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 150
     Dutch: 0
     LensShift: {x: 0, y: 0}
   m_Transitions:
@@ -635,7 +634,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997232909}
   m_LocalRotation: {x: 0.25737163, y: 0.026086522, z: -0.0069505945, w: 0.96593535}
-  m_LocalPosition: {x: 0.5, y: 15.666904, z: -1.7383084}
+  m_LocalPosition: {x: 0.5, y: 8.857774, z: -1.8936156}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 310346448}

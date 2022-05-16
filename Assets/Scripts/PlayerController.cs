@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController characterController;
     public float speed = 6;
     public float mouseSensitivity = 2f;
-    public float upLimit = -50;
-    public float downLimit = 50;
+    public float boostSpeed;
 
     private void Update()
     {
@@ -20,9 +19,14 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalMove = Input.GetAxis("Horizontal");
         float verticalMove = Input.GetAxis("Vertical");
+        float currentSpeed = speed;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            currentSpeed = boostSpeed;
+        }
 
         Vector3 move = transform.forward * verticalMove + transform.right * horizontalMove;
-        characterController.Move(speed * Time.deltaTime * move);
+        characterController.Move(currentSpeed * Time.deltaTime * move);
     }
 
     public void Rotate()
