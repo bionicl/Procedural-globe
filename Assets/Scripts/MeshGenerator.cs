@@ -28,6 +28,7 @@ public class MeshGenerator : MonoBehaviour
     void Start()
     {
         seed = UnityEngine.Random.Range(10000,1000000);
+        UpdateOnce();
     }
 
     [ButtonMethod]
@@ -39,9 +40,10 @@ public class MeshGenerator : MonoBehaviour
         }
         chunks.Clear();
         enabledChunks.Clear();
+        UpdateOnce();
     }
 
-    private void Update()
+    private void UpdateOnce()
     {
         int playerCurrentX = Mathf.RoundToInt(player.position.x / chunkSize);
         int playerCurrentZ = Mathf.RoundToInt(player.position.z / chunkSize);
@@ -50,13 +52,11 @@ public class MeshGenerator : MonoBehaviour
 
         int r = renderDistance;
         List<Vector2Int> chunksToRender = new List<Vector2Int>();
-        for (int x = playerCurrentX - r; x <= playerCurrentX + r; x++)
-        {
-            for (int y = playerCurrentZ - r; y <= playerCurrentZ + r; y++)
-            {
+        chunksToRender.Add(new Vector2Int(playerCurrentX + 3, playerCurrentZ));
+        for (int x = playerCurrentX - r; x <= playerCurrentX + r; x++) {
+            for (int y = playerCurrentZ - r; y <= playerCurrentZ + r; y++) {
                 //Debug.Log(new Vector2Int(x, y));
-                if (Mathf.Pow(x - playerCurrentX, 2) + Mathf.Pow(y - playerCurrentZ, 2) <= Mathf.Pow(r, 2))
-                {
+                if (Mathf.Pow(x - playerCurrentX, 2) + Mathf.Pow(y - playerCurrentZ, 2) <= Mathf.Pow(r, 2)) {
                     chunksToRender.Add(new Vector2Int(x, y));
                 }
             }
@@ -104,14 +104,15 @@ public class MeshGenerator : MonoBehaviour
 
         vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
 
+        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, chunkPosition, perlinMultiplier);
+
         for (int z = 0, i = 0; z < chunkSize + 1; z++)
         {
             for (int x = 0; x < chunkSize + 1; x++)
             {
-                float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
+                //float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
                 //y += Mathf.PerlinNoise(x * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.y * perlinMultiplier) * perlinAddition/4;
-
-                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, y , z + chunkPosition.y * chunkSize);
+                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, noise[x, z], z + chunkPosition.y * chunkSize);
                 i++;
             }
         }
@@ -145,13 +146,15 @@ public class MeshGenerator : MonoBehaviour
         enabledChunks.Add(chunkPosition, newGo);
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (vertices == null)
-    //        return;
-    //    for (int i = 0; i < vertices.Length; i++)
-    //    {
-    //        Gizmos.DrawSphere(vertices[i], .1f);
+    //private void OnDrawGizmos() {
+    //    foreach (var item in enabledChunks) {
+    //        Vector3[] vertices = item.Value.GetComponent<MeshFilter>().mesh.vertices;
+    //        if (vertices == null)
+    //            return;
+    //        for (int i = 0; i < vertices.Length; i++) {
+    //            TextGizmo.Draw(vertices[i], vertices[i].x.ToString() + ", " + vertices[i].y.ToString());
+    //        }
     //    }
+        
     //}
 }
