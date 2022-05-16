@@ -24,6 +24,7 @@ public class MeshGenerator : MonoBehaviour
     public float persistance;
     public float lacunarity;
     public MapDisplay mapDisplay;
+    public TerrainType[] regions;
 
     //temp
     List<Vector2Int> keysToRemove = new List<Vector2Int>();
@@ -56,7 +57,7 @@ public class MeshGenerator : MonoBehaviour
 
         int r = renderDistance;
         List<Vector2Int> chunksToRender = new List<Vector2Int>();
-        chunksToRender.Add(new Vector2Int(playerCurrentX + 3, playerCurrentZ));
+        //chunksToRender.Add(playerPosition);
         for (int x = playerCurrentX - r; x <= playerCurrentX + r; x++) {
             for (int y = playerCurrentZ - r; y <= playerCurrentZ + r; y++) {
                 //Debug.Log(new Vector2Int(x, y));
@@ -98,15 +99,20 @@ public class MeshGenerator : MonoBehaviour
             return;
         }
         GameObject newGo = new GameObject();
+        newGo.transform.SetParent(transform);
         newGo.name = chunkPosition.x.ToString() + ", " + chunkPosition.y.ToString();
-        newGo.AddComponent<MeshRenderer>().material = material;
+        MeshRenderer newMeshRenderer = newGo.AddComponent<MeshRenderer>();
+        newMeshRenderer.sharedMaterial = new Material(material);
         MeshFilter newMeshFilter = newGo.AddComponent<MeshFilter>();
 
         Vector3[] vertices;
         int[] triangles;
+        Vector2[] uvs;
         Mesh newMesh = new Mesh();
+        Color[] colorMap = new Color[chunkSize * chunkSize];
 
         vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
+        uvs = new Vector2[(chunkSize + 1) * (chunkSize + 1)];
 
         float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, seed, chunkPosition, scale, octaves, persistance, lacunarity);
         //mapDisplay.DrawNoiseMap(noise);
@@ -117,7 +123,9 @@ public class MeshGenerator : MonoBehaviour
             {
                 //float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
                 //y += Mathf.PerlinNoise(x * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.y * perlinMultiplier) * perlinAddition/4;
-                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, noise[x, z] * perlinAddition, z + chunkPosition.y * chunkSize);
+                float y = noise[x, z] * perlinAddition;
+                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, y, z + chunkPosition.y * chunkSize);
+                uvs[i] = new Vector2(x / (float)chunkSize, z / (float)chunkSize);
                 i++;
             }
         }
@@ -135,18 +143,33 @@ public class MeshGenerator : MonoBehaviour
                 triangles[tris + 3] = vert + 1;
                 triangles[tris + 4] = vert + chunkSize + 1;
                 triangles[tris + 5] = vert + chunkSize + 2;
-
+                
                 vert++;
                 tris += 6;
             }
             vert++;
         }
 
+        // Colors
+        for (int y = 0; y < chunkSize; y++) {
+            for (int x = 0; x < chunkSize; x++) {
+                float currentHeight = noise[x, y] * perlinAddition;
+                for (int i = 0; i < regions.Length; i++) {
+                    if (currentHeight <= regions[i].height) {
+                        colorMap[y * chunkSize + x] = regions[i].color;
+                        break;
+                    }
+                }
+            }
+        }
+
         newMesh.Clear();
         newMesh.vertices = vertices;
         newMesh.triangles = triangles;
+        newMesh.uv = uvs;
         newMesh.RecalculateNormals();
-        newMeshFilter.mesh = newMesh;
+        newMeshFilter.sharedMesh = newMesh;
+        newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMap(colorMap, chunkSize);
         chunks.Add(chunkPosition, newGo);
         enabledChunks.Add(chunkPosition, newGo);
     }
@@ -162,4 +185,11 @@ public class MeshGenerator : MonoBehaviour
     //    }
         
     //}
+}
+
+[System.Serializable]
+public struct TerrainType {
+    public string name;
+    public float height;
+    public Color color;
 }

@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.2916963, g: 0.4166416, b: 0.5377358, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.02
@@ -155,14 +155,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   player: {fileID: 1128895517}
-  chunkSize: 40
-  perlinAddition: 9.8
+  chunkSize: 80
+  perlinAddition: 9
   renderDistance: 5
-  scale: 80
-  octaves: 4
+  scale: 50
+  octaves: 2
   persistance: 0.5
-  lacunarity: 2
+  lacunarity: 4
   mapDisplay: {fileID: 47778650}
+  regions:
+  - name: Water
+    height: -4
+    color: {r: 0.1957547, g: 0.29510006, b: 0.5, a: 1}
+  - name: Sand
+    height: -1.5
+    color: {r: 0.99828607, g: 1, b: 0.27058828, a: 1}
+  - name: Grass
+    height: 3
+    color: {r: 0.38877535, g: 1, b: 0.2688679, a: 1}
+  - name: Snow
+    height: 4.5
+    color: {r: 0.15686275, g: 0.7764706, b: 0.25490198, a: 1}
+  - name: Rock
+    height: 6
+    color: {r: 0.5660378, g: 0.49404836, b: 0.20024922, a: 1}
+  - name: Rock 2
+    height: 8
+    color: {r: 0.3679245, g: 0.3192187, b: 0.11627802, a: 1}
+  - name: Snow
+    height: 20
+    color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &47778650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,7 +484,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 150
+  far clip plane: 250
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -735,7 +757,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 150
+    FarClipPlane: 250
     Dutch: 0
     LensShift: {x: 0, y: 0}
   m_Transitions:
