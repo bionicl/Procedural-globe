@@ -12,13 +12,18 @@ public class MeshGenerator : MonoBehaviour
     public Material material;
     public Transform player;
 
-    float seed;
+    int seed;
 
     public int chunkSize = 50;
-    [Range(0.01f, 1f)]
-    public float perlinMultiplier = 0.3f;
     public float perlinAddition = 2f;
     public int renderDistance;
+
+    [Header("Noise generator")]
+    public float scale = .15f;
+    public int octaves;
+    public float persistance;
+    public float lacunarity;
+    public MapDisplay mapDisplay;
 
     //temp
     List<Vector2Int> keysToRemove = new List<Vector2Int>();
@@ -27,8 +32,8 @@ public class MeshGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        seed = UnityEngine.Random.Range(10000,1000000);
-        UpdateOnce();
+        seed = UnityEngine.Random.Range(0,1000000);
+        Update();
     }
 
     [ButtonMethod]
@@ -40,10 +45,9 @@ public class MeshGenerator : MonoBehaviour
         }
         chunks.Clear();
         enabledChunks.Clear();
-        UpdateOnce();
     }
 
-    private void UpdateOnce()
+    private void Update()
     {
         int playerCurrentX = Mathf.RoundToInt(player.position.x / chunkSize);
         int playerCurrentZ = Mathf.RoundToInt(player.position.z / chunkSize);
@@ -104,7 +108,8 @@ public class MeshGenerator : MonoBehaviour
 
         vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
 
-        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, chunkPosition, perlinMultiplier);
+        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, seed, chunkPosition, scale, octaves, persistance, lacunarity);
+        //mapDisplay.DrawNoiseMap(noise);
 
         for (int z = 0, i = 0; z < chunkSize + 1; z++)
         {
@@ -112,7 +117,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 //float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
                 //y += Mathf.PerlinNoise(x * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.y * perlinMultiplier) * perlinAddition/4;
-                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, noise[x, z], z + chunkPosition.y * chunkSize);
+                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, noise[x, z] * perlinAddition, z + chunkPosition.y * chunkSize);
                 i++;
             }
         }
