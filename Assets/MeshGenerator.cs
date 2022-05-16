@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using MyBox;
+using System.Linq;
 using UnityEngine;
+using System;
 
-[RequireComponent(typeof(MeshFilter))]
 public class MeshGenerator : MonoBehaviour
 {
     Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
@@ -16,6 +17,10 @@ public class MeshGenerator : MonoBehaviour
     public int chunkSize = 50;
     public float perlinMultiplier = 0.3f;
     public float perlinAddition = 2f;
+    public int renderDistance;
+
+    //temp
+    List<Vector2Int> keysToRemove = new List<Vector2Int>();
 
 
     // Start is called before the first frame update
@@ -29,11 +34,39 @@ public class MeshGenerator : MonoBehaviour
         int playerCurrentX = Mathf.RoundToInt(player.position.x / chunkSize);
         int playerCurrentZ = Mathf.RoundToInt(player.position.z / chunkSize);
         Vector2Int playerPosition = new Vector2Int(playerCurrentX, playerCurrentZ);
-        GenerateChunk(playerPosition);
-        List<Vector2Int> keysToRemove = new List<Vector2Int>();
+        //Debug.Log(playerPosition);
+
+        int r = renderDistance;
+        List<Vector2Int> chunksToRender = new List<Vector2Int>();
+        for (int x = playerCurrentX - r; x <= playerCurrentX + r; x++)
+        {
+            for (int y = playerCurrentZ - r; y <= playerCurrentZ + r; y++)
+            {
+                //Debug.Log(new Vector2Int(x, y));
+                if (Mathf.Pow(x - playerCurrentX, 2) + Mathf.Pow(y - playerCurrentZ, 2) <= Mathf.Pow(r, 2))
+                {
+                    chunksToRender.Add(new Vector2Int(x, y));
+                }
+                //if (x*x + y*y <= r*r)
+                //{
+                //    chunksToRender.Add(new Vector2Int(x, y));
+                //}
+            }
+        }
+        //chunksToRender[0] = playerPosition;
+        //chunksToRender[1] = new Vector2Int(playerCurrentX, playerCurrentZ + 1);
+        //chunksToRender[2] = new Vector2Int(playerCurrentX + 1, playerCurrentZ + 1);
+        //chunksToRender[3] = new Vector2Int(playerCurrentX + 1, playerCurrentZ);
+        //chunksToRender[4] = new Vector2Int(playerCurrentX + 1, playerCurrentZ - 1);
+        //chunksToRender[5] = new Vector2Int(playerCurrentX, playerCurrentZ - 1);
+        //chunksToRender[6] = new Vector2Int(playerCurrentX - 1, playerCurrentZ - 1);
+        //chunksToRender[7] = new Vector2Int(playerCurrentX - 1, playerCurrentZ);
+        //chunksToRender[8] = new Vector2Int(playerCurrentX - 1, playerCurrentZ + 1);
+
+        keysToRemove.Clear();
         foreach (var item in enabledChunks)
         {
-            if (item.Key != playerPosition)
+            if (!chunksToRender.Contains(item.Key))
             {
                 keysToRemove.Add(item.Key);
             }
@@ -43,8 +76,13 @@ public class MeshGenerator : MonoBehaviour
             enabledChunks[item].SetActive(false);
             enabledChunks.Remove(item);
         }
-        keysToRemove.Clear();
-        Debug.Log(chunks.Count + ", " + enabledChunks.Count);
+
+        foreach (var item in chunksToRender)
+        {
+            GenerateChunk(item);
+        }
+
+        //Debug.Log(chunks.Count + ", " + enabledChunks.Count);
     }
 
     void GenerateChunk(Vector2Int chunkPosition)
