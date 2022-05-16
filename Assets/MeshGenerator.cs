@@ -6,12 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshGenerator : MonoBehaviour
 {
-    Dictionary<Vector2Int, Mesh> chunks = new Dictionary<Vector2Int, Mesh>();
+    Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
+    Dictionary<Vector2Int, GameObject> enabledChunks = new Dictionary<Vector2Int, GameObject>();
     public Material material;
+    public Transform player;
 
     int seed;
 
-    public int chunkSize = 5;
+    public int chunkSize = 50;
     public float perlinMultiplier = 0.3f;
     public float perlinAddition = 2f;
 
@@ -20,25 +22,42 @@ public class MeshGenerator : MonoBehaviour
     void Start()
     {
         seed = 0;
-        GenerateChunk(new Vector2Int(0, 0));
-        GenerateChunk(new Vector2Int(0, 1));
-        GenerateChunk(new Vector2Int(1, 0));
-        GenerateChunk(new Vector2Int(1, 1));
     }
 
-    [ButtonMethod]
-    void RefreshShape()
+    private void Update()
     {
-        //ChenerateChunk();
+        int playerCurrentX = Mathf.RoundToInt(player.position.x / chunkSize);
+        int playerCurrentZ = Mathf.RoundToInt(player.position.z / chunkSize);
+        Vector2Int playerPosition = new Vector2Int(playerCurrentX, playerCurrentZ);
+        GenerateChunk(playerPosition);
+        List<Vector2Int> keysToRemove = new List<Vector2Int>();
+        foreach (var item in enabledChunks)
+        {
+            if (item.Key != playerPosition)
+            {
+                keysToRemove.Add(item.Key);
+            }
+        }
+        foreach (var item in keysToRemove)
+        {
+            enabledChunks[item].SetActive(false);
+            enabledChunks.Remove(item);
+        }
+        keysToRemove.Clear();
+        Debug.Log(chunks.Count + ", " + enabledChunks.Count);
     }
-    
-    //private void Update()
-    //{
-    //    UpdateMesh();
-    //}
 
     void GenerateChunk(Vector2Int chunkPosition)
     {
+        if (chunks.ContainsKey(chunkPosition))
+        {
+            if (!enabledChunks.ContainsKey(chunkPosition))
+            {
+                chunks[chunkPosition].SetActive(true);
+                enabledChunks.Add(chunkPosition, chunks[chunkPosition]);
+            }
+            return;
+        }
         GameObject newGo = new GameObject();
         newGo.AddComponent<MeshRenderer>().material = material;
         MeshFilter newMeshFilter = newGo.AddComponent<MeshFilter>();
@@ -84,7 +103,8 @@ public class MeshGenerator : MonoBehaviour
         newMesh.triangles = triangles;
         newMesh.RecalculateNormals();
         newMeshFilter.mesh = newMesh;
-        chunks.Add(chunkPosition, newMesh);
+        chunks.Add(chunkPosition, newGo);
+        enabledChunks.Add(chunkPosition, newGo);
     }
 
     //private void OnDrawGizmos()
