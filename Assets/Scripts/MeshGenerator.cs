@@ -12,9 +12,10 @@ public class MeshGenerator : MonoBehaviour
     public Material material;
     public Transform player;
 
-    int seed;
+    float seed;
 
     public int chunkSize = 50;
+    [Range(0.01f, 1f)]
     public float perlinMultiplier = 0.3f;
     public float perlinAddition = 2f;
     public int renderDistance;
@@ -26,7 +27,18 @@ public class MeshGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        seed = 0;
+        seed = UnityEngine.Random.Range(10000,1000000);
+    }
+
+    [ButtonMethod]
+    private void Reset()
+    {
+        foreach (var item in chunks)
+        {
+            Destroy(item.Value);
+        }
+        chunks.Clear();
+        enabledChunks.Clear();
     }
 
     private void Update()
@@ -82,6 +94,7 @@ public class MeshGenerator : MonoBehaviour
             return;
         }
         GameObject newGo = new GameObject();
+        newGo.name = chunkPosition.x.ToString() + ", " + chunkPosition.y.ToString();
         newGo.AddComponent<MeshRenderer>().material = material;
         MeshFilter newMeshFilter = newGo.AddComponent<MeshFilter>();
 
@@ -96,6 +109,8 @@ public class MeshGenerator : MonoBehaviour
             for (int x = 0; x < chunkSize + 1; x++)
             {
                 float y = Mathf.PerlinNoise(x * perlinMultiplier + seed + chunkSize * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed + chunkSize * chunkPosition.y * perlinMultiplier) * perlinAddition;
+                //y += Mathf.PerlinNoise(x * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.x * perlinMultiplier, z * perlinMultiplier + seed*200 + chunkSize*8 * chunkPosition.y * perlinMultiplier) * perlinAddition/4;
+
                 vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, y , z + chunkPosition.y * chunkSize);
                 i++;
             }
