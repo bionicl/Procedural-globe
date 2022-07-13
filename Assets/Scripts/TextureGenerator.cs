@@ -4,10 +4,28 @@ using System.Collections;
 public static class TextureGenerator {
 
 	public static Texture2D TextureFromColourMap(Color[] colourMap, int chunkSize) {
-		Texture2D texture = new Texture2D(chunkSize, chunkSize);
+		int sizeUp = 4;
+
+		Texture2D texture = new Texture2D(chunkSize * sizeUp, chunkSize * sizeUp);
 		texture.filterMode = FilterMode.Bilinear;
 		texture.wrapMode = TextureWrapMode.Clamp;
-		texture.SetPixels(colourMap);
+
+		Color[] sharperColorMap = new Color[colourMap.Length * sizeUp * sizeUp];
+        for (int i = 0; i < colourMap.Length; i++) {
+			int x = (i % chunkSize) * sizeUp;
+			int y = i / chunkSize * sizeUp;
+			int line = chunkSize * sizeUp;
+			Color color = colourMap[i];
+
+            for (int j = 0; j < sizeUp; j++) {
+                for (int k = 0; k < sizeUp; k++) {
+					sharperColorMap[(x + j) + ((y + k) * line)] = color;
+
+                }
+            }
+		}
+
+		texture.SetPixels(sharperColorMap);
 		texture.Apply();
 		return texture;
 	}
