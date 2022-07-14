@@ -30,6 +30,51 @@ public static class TextureGenerator {
 		return texture;
 	}
 
+	public static Texture2D TextureFromColourMapWithSmooth(Color[] colorMap, int chunkSize) {
+		//int enlargeTimes = 1;
+		int perAxisAddition = chunkSize - 1;
+		int newSideSize = chunkSize + perAxisAddition;
+
+		Texture2D texture = new Texture2D(newSideSize, newSideSize);
+		texture.filterMode = FilterMode.Point;
+		texture.wrapMode = TextureWrapMode.Clamp;
+
+		Color[] smootherColorMap = new Color[newSideSize * newSideSize];
+
+        
+
+		// Step 1: create spaces between values
+		for (int i = 0; i < colorMap.Length; i++) {
+			int x = i % chunkSize;
+			int y = i / chunkSize;
+			int position = x * 2 + y * 2 * newSideSize;
+			smootherColorMap[position] = colorMap[i];
+		}
+
+        // Step 2: fill spaces horizontally
+        for (int i = 1; i < colorMap.Length; i++) {
+			int x = i % chunkSize;
+			int y = i / chunkSize;
+			int position = x * 2 + y * 2 * newSideSize;
+			if (x != 0)
+				smootherColorMap[position - 1] = (smootherColorMap[position - 2] + smootherColorMap[position]) / 2;
+		}
+
+		// Step 3: fill spaces vertically
+		for (int i = 1; i < smootherColorMap.Length; i++) {
+			int x = i % newSideSize;
+			int y = i / newSideSize;
+			if (y % 2 != 0)
+				smootherColorMap[x + y * newSideSize] = (smootherColorMap[x + (y - 1) * newSideSize] + smootherColorMap[x + (y + 1) * newSideSize]) / 2;
+			//else
+			//	i += newSideSize - 1;
+		}
+
+		texture.SetPixels(smootherColorMap);
+		texture.Apply();
+		return texture;
+	}
+
 
 	public static Texture2D TextureFromHeightMap(float[,] heightMap) {
 		int width = heightMap.GetLength(0);

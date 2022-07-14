@@ -169,7 +169,7 @@ public class MeshGenerator : MonoBehaviour
         newMesh.uv = uvs;
         newMesh.RecalculateNormals();
         newMeshFilter.sharedMesh = newMesh;
-        newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMap(colorMap, chunkSize);
+        newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize);
         chunks.Add(chunkPosition, newGo);
         enabledChunks.Add(chunkPosition, newGo);
     }
