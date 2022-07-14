@@ -158,7 +158,14 @@ public class MeshGenerator : MonoBehaviour
                 float currentHeight = noise[x, y] * perlinAddition;
                 for (int i = 0; i < regions.Length; i++) {
                     if (currentHeight <= regions[i].height) {
-                        colorMap[y * chunkSize + x] = regions[i].color;
+                        
+                        if (regions[i].useGradient && i >= 1) {
+                            float start = regions[i - 1].height;
+                            float end = regions[i].height;
+                            colorMap[y * chunkSize + x] = regions[i].gradient.Evaluate((currentHeight - start)/end);
+                        } else {
+                            colorMap[y * chunkSize + x] = regions[i].color;
+                        }
                         break;
                     }
                 }
@@ -193,5 +200,7 @@ public class MeshGenerator : MonoBehaviour
 public struct TerrainType {
     public string name;
     public float height;
-    public Color color;
+    public bool useGradient;
+    [ConditionalField(nameof(useGradient), true)] public Color color;
+    [ConditionalField(nameof(useGradient))] public Gradient gradient;
 }
