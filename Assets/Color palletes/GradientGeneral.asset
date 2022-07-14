@@ -54,23 +54,23 @@ MonoBehaviour:
       serializedVersion: 2
       key0: {r: 0, g: 0, b: 1, a: 1}
       key1: {r: 0, g: 0.779325, b: 1, a: 1}
-      key2: {r: 0.80869263, g: 0.8352941, b: 0, a: 0}
-      key3: {r: 0.061110973, g: 1, b: 0, a: 0}
-      key4: {r: 0.25401974, g: 0.6320754, b: 0.014907437, a: 0}
+      key2: {r: 0.80869263, g: 0.8352941, b: 0, a: 1}
+      key3: {r: 0.98765564, g: 1, b: 0, a: 0}
+      key4: {r: 1, g: 0.6679428, b: 0, a: 0}
       key5: {r: 0.6886792, g: 0.48610646, b: 0, a: 0}
-      key6: {r: 0.4433962, g: 0.30888277, b: 0, a: 0}
+      key6: {r: 0.9339623, g: 0.23861066, b: 0, a: 0}
       key7: {r: 1, g: 1, b: 1, a: 0}
       ctime0: 578
       ctime1: 8288
-      ctime2: 23130
-      ctime3: 28527
-      ctime4: 38743
+      ctime2: 21395
+      ctime3: 25636
+      ctime4: 29491
       ctime5: 48188
-      ctime6: 54356
+      ctime6: 54934
       ctime7: 65535
       atime0: 0
-      atime1: 65535
-      atime2: 0
+      atime1: 58018
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -78,4 +78,4 @@ MonoBehaviour:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 8
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3

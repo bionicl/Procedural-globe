@@ -156,7 +156,7 @@ MonoBehaviour:
   material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   player: {fileID: 1128895517}
   chunkSize: 80
-  perlinAddition: 9
+  perlinAddition: 16.08
   renderDistance: 5
   smoothTimes: 0
   scale: 50

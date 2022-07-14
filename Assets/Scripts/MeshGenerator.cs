@@ -106,6 +106,7 @@ public class MeshGenerator : MonoBehaviour
         MeshRenderer newMeshRenderer = newGo.AddComponent<MeshRenderer>();
         newMeshRenderer.sharedMaterial = new Material(material);
         MeshFilter newMeshFilter = newGo.AddComponent<MeshFilter>();
+        MeshCollider meshCollider = newGo.AddComponent<MeshCollider>();    
 
         Vector3[] vertices;
         int[] triangles;
@@ -179,6 +180,7 @@ public class MeshGenerator : MonoBehaviour
         newMesh.RecalculateNormals();
         newMeshFilter.sharedMesh = newMesh;
         newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize, smoothTimes);
+        meshCollider.sharedMesh = newMesh;
         chunks.Add(chunkPosition, newGo);
         enabledChunks.Add(chunkPosition, newGo);
     }
