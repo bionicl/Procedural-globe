@@ -17,6 +17,8 @@ public class MeshGenerator : MonoBehaviour
     public int chunkSize = 50;
     public float perlinAddition = 2f;
     public int renderDistance;
+    [Range(0, 2)]
+    public int smoothTimes = 0;
 
     [Header("Noise generator")]
     public float scale = .15f;
@@ -169,7 +171,7 @@ public class MeshGenerator : MonoBehaviour
         newMesh.uv = uvs;
         newMesh.RecalculateNormals();
         newMeshFilter.sharedMesh = newMesh;
-        newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize);
+        newMeshRenderer.sharedMaterial.mainTexture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize, smoothTimes);
         chunks.Add(chunkPosition, newGo);
         enabledChunks.Add(chunkPosition, newGo);
     }
