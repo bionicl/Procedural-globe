@@ -26,7 +26,7 @@ public class MeshGenerator : MonoBehaviour
     public float persistance;
     public float lacunarity;
     public MapDisplay mapDisplay;
-    public TerrainType[] regions;
+    public ColorPalette colorPalette;
 
     //temp
     List<Vector2Int> keysToRemove = new List<Vector2Int>();
@@ -156,15 +156,15 @@ public class MeshGenerator : MonoBehaviour
         for (int y = 0; y < chunkSize; y++) {
             for (int x = 0; x < chunkSize; x++) {
                 float currentHeight = noise[x, y] * perlinAddition;
-                for (int i = 0; i < regions.Length; i++) {
-                    if (currentHeight <= regions[i].height) {
+                for (int i = 0; i < colorPalette.regions.Length; i++) {
+                    if (currentHeight <= colorPalette.regions[i].height) {
                         
-                        if (regions[i].useGradient && i >= 1) {
-                            float start = regions[i - 1].height;
-                            float end = regions[i].height;
-                            colorMap[y * chunkSize + x] = regions[i].gradient.Evaluate((currentHeight - start)/end);
+                        if (colorPalette.regions[i].useGradient && i >= 1) {
+                            float start = colorPalette.regions[i - 1].height;
+                            float end = colorPalette.regions[i].height;
+                            colorMap[y * chunkSize + x] = colorPalette.regions[i].gradient.Evaluate((currentHeight - start)/end);
                         } else {
-                            colorMap[y * chunkSize + x] = regions[i].color;
+                            colorMap[y * chunkSize + x] = colorPalette.regions[i].color;
                         }
                         break;
                     }
