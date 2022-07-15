@@ -7,9 +7,9 @@ using UnityEngine;
 public class Biome : ScriptableObject
 {
     [Header("Biome selection logic")]
-    [MinMaxRange(0, 1)]
+    //[MinMaxRange(0, 1)]
     public RangedFloat rainFallRange;
-    [MinMaxRange(0, 1)]
+    //[MinMaxRange(0, 1)]
     public RangedFloat temperatureRange;
 
     [Header("Colors")]

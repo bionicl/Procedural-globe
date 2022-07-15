@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainFallRange:
     Min: 0
-    Max: 0.3953199
+    Max: 0.4
   temperatureRange:
-    Min: 0.601594
+    Min: 0.6
     Max: 1
   regions:
   - name: Sand

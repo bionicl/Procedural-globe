@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Rain forest
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.6957966
+    Min: 0.7
     Max: 1
   temperatureRange:
-    Min: 0.601594
+    Min: 0.6
     Max: 1
   regions:
   - name: Forest

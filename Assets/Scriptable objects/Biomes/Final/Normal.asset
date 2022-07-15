@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainFallRange:
     Min: 0
-    Max: 0.5030027
+    Max: 0.5
   temperatureRange:
-    Min: 0.19879891
-    Max: 0.597205
+    Min: 0.2
+    Max: 0.6
   regions:
   - name: Water
     height: 40

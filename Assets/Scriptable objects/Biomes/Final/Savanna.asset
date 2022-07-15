@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Savanna
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.39759782
-    Max: 0.7018013
+    Min: 0.4
+    Max: 0.7
   temperatureRange:
-    Min: 0.601594
+    Min: 0.6
     Max: 1
   regions:
   - name: Sand

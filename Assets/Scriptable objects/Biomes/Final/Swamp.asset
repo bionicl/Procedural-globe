@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Swamp
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.49699736
+    Min: 0.5
     Max: 1
   temperatureRange:
-    Min: 0.19879891
-    Max: 0.597205
+    Min: 0.2
+    Max: 0.6
   regions:
   - name: Swamp
     height: 40
