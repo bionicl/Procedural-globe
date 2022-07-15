@@ -159,7 +159,14 @@ MonoBehaviour:
   perlinAddition: 16.08
   renderDistance: 5
   smoothTimes: 0
-  biome: {fileID: 11400000, guid: 928e64689276144bd95cde64ca8ae9be, type: 2}
+  biomes:
+  - {fileID: 11400000, guid: 7f5a4acf97d6e4ede87369da3f7348bf, type: 2}
+  - {fileID: 11400000, guid: 03f46a8d81d5e4700a27cdde2fc9c930, type: 2}
+  - {fileID: 11400000, guid: 3920871d5f66e40b58ba4df3c08239b3, type: 2}
+  - {fileID: 11400000, guid: 7a7ea739b571c433fb89add6d2ae6d49, type: 2}
+  - {fileID: 11400000, guid: a696813e7201f443793b784ecd2c68a3, type: 2}
+  - {fileID: 11400000, guid: 1b8d80e1c6dd447a3b97fb2365e1f85f, type: 2}
+  biome: {fileID: 11400000, guid: 7f5a4acf97d6e4ede87369da3f7348bf, type: 2}
   mapDisplay: {fileID: 47778650}
 --- !u!114 &47778650
 MonoBehaviour:

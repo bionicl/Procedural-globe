@@ -19,7 +19,7 @@ public class MeshGenerator : MonoBehaviour
     public int smoothTimes = 0;
 
     [Foldout("Biome scriptable object", true)]
-    [DisplayInspector]
+    public Biome[] biomes;
     public Biome biome;
 
     [Header("Debug")]
@@ -111,8 +111,23 @@ public class MeshGenerator : MonoBehaviour
             }
         }
 
+        // Biome
+        float[,] temperatureNoise = Noise.GenerateNoiseMap(chunkSize + 1, GameManager.seed, chunkPosition, biome.perlinNoiseSettings,true);
+        //mapDisplay.DrawNoiseMap(noise);
+        float[,] rainfallNoise = Noise.GenerateNoiseMap(chunkSize + 1, GameManager.seed, chunkPosition, biome.perlinNoiseSettings, true);
+        Biome colorBiome = biomes[0];
+        foreach (var item in biomes) {
+            if (item.temperatureRange.Min < temperatureNoise[0,0] && item.temperatureRange.Max >= temperatureNoise[0,0]) {
+                if (item.rainFallRange.Min < rainfallNoise[0,0] && item.rainFallRange.Max >= temperatureNoise[0,0]) {
+                    colorBiome = item;
+                    break;
+                }
+            }
+        }
+        Debug.Log("Temperature: " + temperatureNoise[0, 0] + " Rainfall: " + rainfallNoise[0, 0]);
+
         // Colors
-        Color[] colorMap = MeshColors.GenerateColors(chunkSize, noise, perlinAddition, biome);
+        Color[] colorMap = MeshColors.GenerateColors(chunkSize, noise, perlinAddition, colorBiome);
 
         // Texture
         Texture2D texture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize, smoothTimes);
