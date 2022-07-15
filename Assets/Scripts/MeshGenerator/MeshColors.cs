@@ -32,12 +32,13 @@ public class MeshColors : MonoBehaviour {
     }
 
     static Color GetColorForPixel(float height, List<BiomeInfo> biomeInfos) {
-        Color output = new Color(0, 0, 0, 0);
+        Color output = new Color(0, 0, 0, 1);
 
         foreach (var biomeInfo in biomeInfos) {
-            output += GetColorForTerrainAndHeight(biomeInfo.biome, height) * biomeInfo.multiplier;
+            Color newColor = GetColorForTerrainAndHeight(biomeInfo.biome, height);
+            output += newColor * biomeInfo.multiplier;
         }
-
+        output.a = 1;
         return output;
     }
 

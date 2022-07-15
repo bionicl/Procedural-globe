@@ -17,7 +17,7 @@ MonoBehaviour:
     Max: 1
   temperatureRange:
     Min: 0
-    Max: 0.2
+    Max: 0.25
   regions:
   - name: Water
     height: 40

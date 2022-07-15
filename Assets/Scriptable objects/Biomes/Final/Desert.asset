@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainFallRange:
     Min: 0
-    Max: 0.4
+    Max: 0.45
   temperatureRange:
     Min: 0.6
     Max: 1
