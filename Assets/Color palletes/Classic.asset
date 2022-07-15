@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed6196bd50524cea803ebb228677d21, type: 3}
   m_Name: Classic
   m_EditorClassIdentifier: 
+  rainFallRange: {x: 0, y: 0}
+  temperatureRange: {x: 0, y: 0}
   regions:
   - name: Water
     height: -4
@@ -244,3 +246,7 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
+  scale: 50
+  octaves: 2
+  persistance: 0.5
+  lacunarity: 1

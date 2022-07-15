@@ -4,20 +4,20 @@ using UnityEngine;
 
 public static class Noise
 {
-    public static float[,] GenerateNoiseMap(int mapSize, int seed, Vector2Int offset, float scale, int octaves, float persistance, float lacunarity)
+    public static float[,] GenerateNoiseMap(int mapSize, int seed, Vector2Int offset, Biome biome)
     {
         float[,] noiseMap = new float[mapSize, mapSize];
 
         System.Random random = new System.Random(seed);
-        Vector2[] octaveOffsets = new Vector2[octaves];
-        for (int i = 0; i < octaves; i++) {
+        Vector2[] octaveOffsets = new Vector2[biome.octaves];
+        for (int i = 0; i < biome.octaves; i++) {
             float offsetX = random.Next(-100000, 10000);
             float offsetY = random.Next(-100000, 10000);
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
         }
 
-        if (scale <= 0) {
-            scale = 0.0001f;
+        if (biome.scale <= 0) {
+            biome.scale = 0.0001f;
         }
 
         float maxNoiseHeight = float.MinValue;
@@ -30,15 +30,15 @@ public static class Noise
                 float frequency = 1;
                 float noiseHeight = 0;
 
-                for (int i = 0; i < octaves; i++) {
-                    float sampleX = (x + (mapSize - 1) * offset.x) / scale * frequency + octaveOffsets[i].x;
-                    float sampleY = (y + (mapSize - 1) * offset.y) / scale * frequency + octaveOffsets[i].y;
+                for (int i = 0; i < biome.octaves; i++) {
+                    float sampleX = (x + (mapSize - 1) * offset.x) / biome.scale * frequency + octaveOffsets[i].x;
+                    float sampleY = (y + (mapSize - 1) * offset.y) / biome.scale * frequency + octaveOffsets[i].y;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
                     noiseHeight += perlinValue * amplitude;
 
-                    amplitude *= persistance;
-                    frequency *= lacunarity;
+                    amplitude *= biome.persistance;
+                    frequency *= biome.lacunarity;
                 }
                 if (noiseHeight > maxNoiseHeight) {
                     maxNoiseHeight = noiseHeight;
