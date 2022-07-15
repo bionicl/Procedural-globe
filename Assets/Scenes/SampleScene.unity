@@ -157,7 +157,7 @@ MonoBehaviour:
   player: {fileID: 1128895517}
   chunkSize: 80
   perlinAddition: 16.08
-  renderDistance: 5
+  renderDistance: 4
   smoothTimes: 0
   biomes:
   - {fileID: 11400000, guid: 7f5a4acf97d6e4ede87369da3f7348bf, type: 2}
@@ -167,6 +167,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a696813e7201f443793b784ecd2c68a3, type: 2}
   - {fileID: 11400000, guid: 1b8d80e1c6dd447a3b97fb2365e1f85f, type: 2}
   biome: {fileID: 11400000, guid: 7f5a4acf97d6e4ede87369da3f7348bf, type: 2}
+  temperaturePerlinNoise: {fileID: 11400000, guid: fa63e788b65744e95825cdc07b19ff76, type: 2}
+  rainfallPerlinNoise: {fileID: 11400000, guid: fbaa1a553c1e84c6283495206036e6bb, type: 2}
   mapDisplay: {fileID: 47778650}
 --- !u!114 &47778650
 MonoBehaviour:
