@@ -18,7 +18,8 @@ public class MeshGenerator : MonoBehaviour
     [Range(0, 2)]
     public int smoothTimes = 0;
 
-    [Header("Noise generator")]
+    [Foldout("Biome scriptable object", true)]
+    [DisplayInspector]
     public Biome biome;
 
     [Header("Debug")]
@@ -98,7 +99,7 @@ public class MeshGenerator : MonoBehaviour
         Vector3[] vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
         Vector2[] uvs = new Vector2[(chunkSize + 1) * (chunkSize + 1)];
 
-        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, GameManager.seed, chunkPosition, biome);
+        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, GameManager.seed, chunkPosition, biome.perlinNoiseSettings);
         //mapDisplay.DrawNoiseMap(noise);
 
         for (int z = 0, i = 0; z < chunkSize + 1; z++) {

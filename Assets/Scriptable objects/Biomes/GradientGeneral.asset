@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed6196bd50524cea803ebb228677d21, type: 3}
   m_Name: GradientGeneral
   m_EditorClassIdentifier: 
+  rainFallRange:
+    Min: 0.1954928
+    Max: 0.40184635
+  temperatureRange:
+    Min: 0
+    Max: 0.24979638
   regions:
   - name: Deep water
     height: -20
@@ -79,3 +85,4 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 8
       m_NumAlphaKeys: 3
+  perlinNoiseSettings: {fileID: 11400000, guid: 7150cbb4f33804922a5c532c5c270370, type: 2}

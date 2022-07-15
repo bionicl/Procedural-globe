@@ -246,7 +246,4 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-  scale: 50
-  octaves: 2
-  persistance: 0.5
-  lacunarity: 1
+  perlinNoiseSettings: {fileID: 11400000, guid: 7150cbb4f33804922a5c532c5c270370, type: 2}
