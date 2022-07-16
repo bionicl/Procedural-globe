@@ -138,7 +138,6 @@ public class MeshBiome : MonoBehaviour
             }
         }
         return output;
-        return input;
     }
 
 

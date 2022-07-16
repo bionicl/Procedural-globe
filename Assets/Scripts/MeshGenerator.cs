@@ -97,31 +97,33 @@ public class MeshGenerator : MonoBehaviour
         newGo.transform.SetParent(transform);
         newGo.name = chunkPosition.x.ToString() + ", " + chunkPosition.y.ToString();
 
-        // Noise
-        Vector3[] vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
-        Vector2[] uvs = new Vector2[(chunkSize + 1) * (chunkSize + 1)];
-
-        float[,] noise = Noise.GenerateNoiseMap(chunkSize + 1, GameManager.seed, chunkPosition, biome.perlinNoiseSettings);
-        //mapDisplay.DrawNoiseMap(noise);
-
-        for (int z = 0, i = 0; z < chunkSize + 1; z++) {
-            for (int x = 0; x < chunkSize + 1; x++) {
-                float y = noise[x, z] * perlinAddition;
-                vertices[i] = new Vector3(x + chunkPosition.x*chunkSize, y, z + chunkPosition.y * chunkSize);
-                uvs[i] = new Vector2(x / (float)chunkSize, z / (float)chunkSize);
-                i++;
-            }
-        }
-
         // Biome
-        List<BiomeInfo>[,] biomeInfoMap = MeshBiome.GenerateBiome(chunkSize, GameManager.seed, chunkPosition, temperaturePerlinNoise, rainfallPerlinNoise, biomes);
+        List<BiomeInfo>[,] biomeInfoMap = MeshBiome.GenerateBiome(chunkSize + 1, GameManager.seed, chunkPosition, temperaturePerlinNoise, rainfallPerlinNoise, biomes);
+
+        // Mesh height (based on noise and biomes)
+
+        float[,] noise = Noise.GenerateNoiseMapBasedOnBiomeInfo(chunkSize + 1, GameManager.seed, chunkPosition, biomeInfoMap);
+
+
+        
 
         // Colors
-        //Color[] colorMap = MeshColors.GenerateColors(chunkSize, noise, perlinAddition, biome);
         Color[] colorMap = MeshColors.GenerateColorsBasedOnBiomeInfo(chunkSize, noise, perlinAddition, biomeInfoMap);
 
         // Texture
         Texture2D texture = TextureGenerator.TextureFromColourMapWithSmooth(colorMap, chunkSize, smoothTimes);
+
+        // Vertices/Uvs
+        Vector3[] vertices = new Vector3[(chunkSize + 1) * (chunkSize + 1)];
+        Vector2[] uvs = new Vector2[(chunkSize + 1) * (chunkSize + 1)];
+        for (int z = 0, i = 0; z < chunkSize + 1; z++) {
+            for (int x = 0; x < chunkSize + 1; x++) {
+                float y = noise[x, z] * perlinAddition;
+                vertices[i] = new Vector3(x + chunkPosition.x * chunkSize, y, z + chunkPosition.y * chunkSize);
+                uvs[i] = new Vector2(x / (float)chunkSize, z / (float)chunkSize);
+                i++;
+            }
+        }
 
         // Setup mesh
         Mesh newMesh = new Mesh();

@@ -15,4 +15,4 @@ MonoBehaviour:
   scale: 500
   octaves: 2
   persistance: 0.1
-  lacunarity: 4
+  lacunarity: 2
