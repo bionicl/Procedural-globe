@@ -157,7 +157,7 @@ MonoBehaviour:
   player: {fileID: 1128895517}
   chunkSize: 80
   perlinAddition: 16.08
-  renderDistance: 7
+  renderDistance: 5
   smoothTimes: 0
   biomes:
   - {fileID: 11400000, guid: 7f5a4acf97d6e4ede87369da3f7348bf, type: 2}

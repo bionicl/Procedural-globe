@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: Sand
     height: 40
     useGradient: 0
-    color: {r: 0, g: 0.92939377, b: 1, a: 1}
+    color: {r: 1, g: 0, b: 0.008803844, a: 1}
     gradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0.8227806, a: 1}

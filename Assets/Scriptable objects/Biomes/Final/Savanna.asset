@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Savanna
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.4
-    Max: 0.75
+    Min: 0.35
+    Max: 0.7
   temperatureRange:
     Min: 0.6
     Max: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: Sand
     height: 40
     useGradient: 0
-    color: {r: 1, g: 0.45544598, b: 0.062745094, a: 1}
+    color: {r: 1, g: 0.062745094, b: 0.08919191, a: 1}
     gradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rain forest
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.7
+    Min: 0.65
     Max: 1
   temperatureRange:
     Min: 0.6
@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: Forest
     height: 40
     useGradient: 0
-    color: {r: 0, g: 0.5, b: 0.13770533, a: 1}
+    color: {r: 0, g: 0.24528301, b: 0.067069575, a: 1}
     gradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}

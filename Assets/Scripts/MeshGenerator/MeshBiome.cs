@@ -30,15 +30,18 @@ public class MeshBiome : MonoBehaviour
     }
 
     static List<BiomeInfo> CheckBiomeInfoMultipliers(List<BiomeInfo> input, float temperatureHeight, float rainfallHeight) {
-        if (input.Count <= 1) {
+
+        if (input.Count == 1) {
             input[0].multiplier = 1;
+            return input;
+        } else if (input.Count == 0) {
             return input;
         }
         
 
         RangedFloat xRange = input[0].biome.temperatureRange;
         RangedFloat yRange = input[0].biome.rainFallRange;
-
+        
         // Find intersection area
         for (int i = 1; i < input.Count; i++) {
             RangedFloat range = input[i].biome.temperatureRange;
@@ -48,52 +51,55 @@ public class MeshBiome : MonoBehaviour
 
             RangedFloat range2 = input[i].biome.rainFallRange;
             var intersection2 = GetIntersection(yRange, range2);
-            if (intersection.HasValue)
+            if (intersection2.HasValue)
                 yRange = intersection2.Value;
         }
-
+        
         // Find verteces
         Biome[] intersectionVertex = new Biome[4];
         foreach (var item in input) {
             RangedFloat tempRange = item.biome.temperatureRange;
             RangedFloat rainRange = item.biome.rainFallRange;
-            bool change = false;
             if (tempRange.Min == xRange.Min && rainRange.Max == yRange.Max) {
                 // Top left
+                //Debug.Log("Top left");
                 intersectionVertex[2] = item.biome;
-                change = true;
             }
             if (tempRange.Max == xRange.Max && rainRange.Max == yRange.Max) {
                 // Top right
+                //Debug.Log("Top right");
                 intersectionVertex[3] = item.biome;
-                change = true;
             }
             if (tempRange.Min == xRange.Min && rainRange.Min == yRange.Min) {
                 // Bottom left
+                //Debug.Log("Bottom left");
                 intersectionVertex[1] = item.biome;
-                change = true;
             }
             if (tempRange.Max == xRange.Max && rainRange.Min == yRange.Min) {
                 // Bottom right
+                //Debug.Log("Bottom right");
                 intersectionVertex[0] = item.biome;
-                change = true;
             }
 
-            if (!change) {
+            if (intersectionVertex[0] == null || intersectionVertex[1] == null || intersectionVertex[2] == null || intersectionVertex[3] == null) {
                 if (tempRange.Max == xRange.Max) {
                     // Right edge
+                    //Debug.Log("Right edge");
                     intersectionVertex[0] = item.biome;
                     intersectionVertex[3] = item.biome;
                 } else if (tempRange.Min == xRange.Min) {
                     // Left edge
+                    //Debug.Log("Left edge");
                     intersectionVertex[1] = item.biome;
                     intersectionVertex[2] = item.biome;
                 } else if (rainRange.Max == yRange.Max) {
                     // Top edge
-                    intersectionVertex[1] = item.biome;
+                    //Debug.Log("Top edge");
                     intersectionVertex[2] = item.biome;
+                    intersectionVertex[3] = item.biome;
                 } else {
                     // Bottom edge
+                    //Debug.Log("Bottom edge");
                     intersectionVertex[0] = item.biome;
                     intersectionVertex[1] = item.biome;
                 }
@@ -132,6 +138,7 @@ public class MeshBiome : MonoBehaviour
             }
         }
         return output;
+        return input;
     }
 
 

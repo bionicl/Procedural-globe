@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: Water
     height: 40
     useGradient: 0
-    color: {r: 0.36320752, g: 1, b: 0.37497562, a: 1}
+    color: {r: 0, g: 1, b: 0.05740881, a: 1}
     gradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}
