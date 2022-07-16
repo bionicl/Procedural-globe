@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed6196bd50524cea803ebb228677d21, type: 3}
-  m_Name: Test2
+  m_Name: Test3
   m_EditorClassIdentifier: 
   rainFallRange:
-    Min: 0.5
-    Max: 1
+    Min: 0
+    Max: 0.6
   temperatureRange:
     Min: 0.45
     Max: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: Sand
     height: 40
     useGradient: 0
-    color: {r: 0.03901875, g: 1, b: 0, a: 1}
+    color: {r: 1, g: 0.8624264, b: 0, a: 1}
     gradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}
